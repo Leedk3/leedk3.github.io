@@ -2,7 +2,7 @@
 
 Official website of the **Intelligent Robotics for Defense Lab (IRDL)** at Jeonbuk National University, led by **Prof. Daegyu Lee**.
 
-🌐 **Live Site**: [https://leedk3.github.io/irdl-lab-jbnu](https://leedk3.github.io/irdl-lab-jbnu)
+🌐 **Live Site**: [https://github.com/Leedk3/irdl-lab-jbnu.github.io](https://github.com/Leedk3/irdl-lab-jbnu.github.io)
 
 ---
 
