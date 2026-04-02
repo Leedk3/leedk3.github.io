@@ -124,9 +124,8 @@ nav {
     line-height: 1.9;
     color: #AABBC8;
     font-weight: 300;
-    text-align: justify;
-    text-justify: inter-word;
-    text-align-last: center;
+    text-align: left;
+    text-align-last: left;
     word-break: keep-all;
 }
 
@@ -916,9 +915,8 @@ nav {
     }
 
     .hero-description {
-        text-align: center !important;
-        text-justify: none !important;
-        text-align-last: center !important;
+        text-align: left !important;
+        text-align-last: left !important;
         font-size: 1.1rem;
         line-height: 1.6;
         word-break: keep-all;
