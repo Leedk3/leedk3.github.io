@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://das.jbnu.ac.kr/sitemap.xml
+Sitemap: https://irdl.jbnu.ac.kr/sitemap.xml
