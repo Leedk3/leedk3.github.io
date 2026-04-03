@@ -832,11 +832,48 @@ nav {
 .footer {
     background: #000000;
     color: #555;
-    text-align: center;
     padding: 20px 0;
     margin-top: 60px;
     font-size: 0.9rem;
     border-top: 1px solid #1A1A1A;
+}
+
+.footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.footer-left p {
+    color: #555;
+}
+
+.footer-right a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #777;
+    transition: color 0.3s;
+}
+
+.footer-right a:hover {
+    color: #00C2E0;
+}
+
+.footer-jbnu-logo {
+    height: 28px;
+    width: auto;
+    opacity: 0.7;
+    filter: brightness(0) invert(1);
+}
+
+@media (max-width: 768px) {
+    .footer-inner {
+        flex-direction: column;
+        text-align: center;
+    }
 }
 
 /* ============================================================
