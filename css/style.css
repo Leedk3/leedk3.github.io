@@ -735,6 +735,11 @@ nav {
     display: block;
 }
 
+.gallery-item--portrait img {
+    height: auto;
+    object-fit: unset;
+}
+
 .gallery-caption {
     padding: 12px;
     font-size: 0.9rem;
@@ -849,6 +854,13 @@ nav {
     color: #555;
 }
 
+.footer-address {
+    margin-top: 4px;
+    font-size: 0.8rem;
+    color: #444;
+    line-height: 1.6;
+}
+
 .footer-right a {
     display: flex;
     align-items: center;
@@ -865,8 +877,6 @@ nav {
 .footer-jbnu-logo {
     height: 28px;
     width: auto;
-    opacity: 0.7;
-    filter: brightness(0) invert(1);
 }
 
 @media (max-width: 768px) {
