@@ -501,6 +501,14 @@ nav {
     color: #00C2E0;
 }
 
+.service-society {
+    font-size: 0.85rem;
+    color: #00C2E0;
+    font-weight: 600;
+    margin: 10px 0 6px;
+    letter-spacing: 0.02em;
+}
+
 .divider {
     margin: 50px 0;
     border: 0;
