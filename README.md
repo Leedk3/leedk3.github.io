@@ -31,7 +31,7 @@ irdl-lab-jbnu.github.io/
 │   └── main.js
 └── assets/
     ├── images/
-    │   ├── main-logo2.jpg
+    │   ├── main-logo.png
     │   ├── team/           # Member profile photos
     │   ├── projects/       # Project images
     │   └── gallery/        # Gallery photos
