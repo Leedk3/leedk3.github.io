@@ -49,10 +49,10 @@ body > * {
 
 /* 헤더 */
 header {
-    background: #0A0A0A;
+    background: #11121A;
     border-bottom: 2px solid transparent;
     border-image: linear-gradient(90deg, #00C2E0, #C724B1) 1;
-    padding: 1rem 0;
+    padding: 0.85rem 0 0.75rem;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -60,36 +60,64 @@ header {
 
 nav {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    gap: 12px;
 }
 
 .logo-area {
     display: flex;
     align-items: center;
+    justify-content: center;
     text-decoration: none;
-    gap: 15px;
+    gap: 14px;
+    width: 100%;
+    min-width: 0;
+    padding: 6px 14px;
+    border-radius: 8px;
+    background: #11121A;
+    border: 1px solid rgba(0, 194, 224, 0.08);
 }
 
 .logo-img {
-    height: 45px;
-    width: auto;
+    width: 96px;
+    height: 38px;
+    object-fit: cover;
+    object-position: left center;
+    border-radius: 0;
+    background: #11121A;
+    flex: 0 0 auto;
 }
 
 .lab-name {
-    font-size: 1.5rem;
+    font-size: 1.35rem;
     font-weight: 700;
-    letter-spacing: -0.5px;
+    letter-spacing: 0;
     background: linear-gradient(135deg, #00C2E0 0%, #C724B1 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.home-page .logo-area {
+    display: none;
+}
+
+.home-page .lab-name {
+    display: none;
 }
 
 .nav-links {
     list-style: none;
     display: flex;
-    gap: 25px;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 18px;
 }
 
 .nav-links a {
@@ -956,16 +984,26 @@ nav {
     line-height: 1.6;
 }
 
-.footer-right a {
+.footer-right {
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.footer-links a {
     text-decoration: none;
     color: #777;
     transition: color 0.3s;
+    line-height: 1.35;
 }
 
-.footer-right a:hover {
+.footer-links a:hover {
     color: #00C2E0;
 }
 
@@ -1023,14 +1061,18 @@ nav {
     }
 
     .logo-img {
-        display: none;
+        display: block;
+        width: 72px;
+        height: 30px;
     }
 
     .lab-name {
         display: block;
         text-align: center;
-        line-height: 1.4;
-        font-size: 1.1rem;
+        line-height: 1.25;
+        font-size: 0.96rem;
+        white-space: normal;
+        overflow: visible;
     }
 
     .pi-card {
