@@ -846,6 +846,17 @@ nav {
     margin: 0;
 }
 
+.ai-server-gallery {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+}
+
+.ai-server-gallery img {
+    max-height: 320px;
+    object-fit: cover;
+}
+
 .project-info {
     flex: 1.5;
 }
