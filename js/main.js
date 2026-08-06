@@ -278,3 +278,184 @@ window.addEventListener('scroll', function() {
         cancelAnimationFrame(animationFrame);
     });
 }());
+
+// 히어로 AI 흐름 배경
+(function() {
+    const hero = document.querySelector('.hero');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!hero) {
+        return;
+    }
+
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+    let animationFrame = 0;
+    let pointerX = 0.58;
+    let pointerY = 0.42;
+    let targetX = 0.58;
+    let targetY = 0.42;
+
+    if (!ctx) {
+        return;
+    }
+
+    canvas.className = 'ai-flow-background';
+    canvas.setAttribute('aria-hidden', 'true');
+    hero.prepend(canvas);
+
+    function resize() {
+        const rect = hero.getBoundingClientRect();
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        width = Math.max(1, rect.width);
+        height = Math.max(1, rect.height);
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function waveY(progress, baseY, amplitude, speed, index, influenceX, influenceY) {
+        const main = Math.sin(progress * Math.PI * 2.4 + speed + index * 0.7);
+        const secondary = Math.sin(progress * Math.PI * 5.2 - speed * 0.72 + index) * 0.42;
+        const swell = Math.sin(progress * Math.PI * 1.1 + speed * 0.45) * 0.28;
+        const x = progress * width;
+        const pull = Math.exp(-Math.abs(x - influenceX) / (width * 0.26));
+
+        return baseY + (main + secondary + swell) * amplitude + (influenceY - baseY) * pull * 0.08;
+    }
+
+    function drawWaveBand(now, index, fillColor, strokeColor) {
+        const waveCount = 26;
+        const baseY = height * (0.33 + index * 0.115);
+        const amplitude = height * (0.045 + index * 0.014);
+        const thickness = height * (0.16 + index * 0.035);
+        const speed = now * (0.00046 + index * 0.00006);
+        const influenceX = pointerX * width;
+        const influenceY = pointerY * height;
+
+        ctx.beginPath();
+
+        for (let i = 0; i <= waveCount; i += 1) {
+            const progress = i / waveCount;
+            const x = progress * width;
+            const y = waveY(progress, baseY, amplitude, speed, index, influenceX, influenceY);
+
+            if (i === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                const prevProgress = (i - 0.5) / waveCount;
+                const cpX = prevProgress * width;
+                const cpY = waveY(prevProgress, baseY, amplitude, speed, index, influenceX, influenceY);
+                ctx.quadraticCurveTo(cpX, cpY, x, y);
+            }
+        }
+
+        for (let i = waveCount; i >= 0; i -= 1) {
+            const progress = i / waveCount;
+            const x = progress * width;
+            const y = waveY(progress, baseY + thickness, amplitude * 0.62, speed + 1.8, index, influenceX, influenceY);
+            ctx.lineTo(x, y);
+        }
+
+        ctx.closePath();
+        ctx.fillStyle = fillColor;
+        ctx.fill();
+
+        ctx.beginPath();
+        for (let i = 0; i <= waveCount; i += 1) {
+            const progress = i / waveCount;
+            const x = progress * width;
+            const y = waveY(progress, baseY, amplitude, speed, index, influenceX, influenceY);
+
+            if (i === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                const prevProgress = (i - 0.5) / waveCount;
+                const cpX = prevProgress * width;
+                const cpY = waveY(prevProgress, baseY, amplitude, speed, index, influenceX, influenceY);
+                ctx.quadraticCurveTo(cpX, cpY, x, y);
+            }
+        }
+
+        ctx.strokeStyle = strokeColor;
+        ctx.lineWidth = Math.max(1.2, height * (0.006 - index * 0.00045));
+        ctx.lineCap = 'round';
+        ctx.shadowColor = strokeColor;
+        ctx.shadowBlur = 22 + index * 4;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+    }
+
+    function drawField(now) {
+        const gradient = ctx.createLinearGradient(0, 0, width, height);
+        gradient.addColorStop(0, '#02050B');
+        gradient.addColorStop(0.45, '#07101D');
+        gradient.addColorStop(1, '#130818');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, width, height);
+
+        pointerX += (targetX - pointerX) * 0.035;
+        pointerY += (targetY - pointerY) * 0.035;
+
+        const glowX = pointerX * width;
+        const glowY = pointerY * height;
+        const glow = ctx.createRadialGradient(glowX, glowY, 0, glowX, glowY, Math.max(width, height) * 0.72);
+        glow.addColorStop(0, 'rgba(0, 224, 255, 0.24)');
+        glow.addColorStop(0.34, 'rgba(199, 36, 177, 0.13)');
+        glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = glow;
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.globalCompositeOperation = 'screen';
+        drawWaveBand(now, 0, 'rgba(0, 194, 224, 0.080)', 'rgba(0, 224, 255, 0.30)');
+        drawWaveBand(now, 1, 'rgba(77, 210, 255, 0.060)', 'rgba(77, 210, 255, 0.22)');
+        drawWaveBand(now, 2, 'rgba(199, 36, 177, 0.075)', 'rgba(199, 36, 177, 0.25)');
+        drawWaveBand(now, 3, 'rgba(0, 194, 224, 0.050)', 'rgba(0, 194, 224, 0.17)');
+        drawWaveBand(now, 4, 'rgba(255, 255, 255, 0.030)', 'rgba(255, 255, 255, 0.10)');
+        ctx.globalCompositeOperation = 'source-over';
+
+        const meshStep = width < 768 ? 44 : 58;
+        ctx.strokeStyle = 'rgba(0, 224, 255, 0.035)';
+        ctx.lineWidth = 1;
+
+        for (let x = (now * 0.012) % meshStep; x < width; x += meshStep) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x + Math.sin(now * 0.0009 + x) * 18, height);
+            ctx.stroke();
+        }
+    }
+
+    function draw(now) {
+        ctx.clearRect(0, 0, width, height);
+        drawField(now);
+
+        if (!prefersReducedMotion) {
+            animationFrame = requestAnimationFrame(draw);
+        }
+    }
+
+    hero.addEventListener('pointermove', function(event) {
+        const rect = hero.getBoundingClientRect();
+        targetX = (event.clientX - rect.left) / rect.width;
+        targetY = (event.clientY - rect.top) / rect.height;
+
+        if (prefersReducedMotion) {
+            draw(performance.now());
+        }
+    }, { passive: true });
+
+    window.addEventListener('resize', resize);
+
+    resize();
+    draw(0);
+
+    window.addEventListener('beforeunload', function() {
+        cancelAnimationFrame(animationFrame);
+    });
+}());
