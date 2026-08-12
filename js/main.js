@@ -13,7 +13,8 @@ window.addEventListener('scroll', function() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    const activeGlyphs = ['1', '*', '#'];
+    const hotGlyphs = ['>', '*'];
+    const trailGlyphs = ['1', '-'];
     const pointer = { x: -9999, y: -9999, targetX: -9999, targetY: -9999, activeUntil: 0 };
     const ripples = [];
     let cells = [];
@@ -26,6 +27,7 @@ window.addEventListener('scroll', function() {
     let cellSize = 24;
     let lastTrailX = -9999;
     let lastTrailY = -9999;
+    let lastDrawAt = -Infinity;
 
     if (!ctx) {
         return;
@@ -35,12 +37,16 @@ window.addEventListener('scroll', function() {
     canvas.setAttribute('aria-hidden', 'true');
     document.body.prepend(canvas);
 
-    function randomActiveGlyph() {
-        return activeGlyphs[Math.floor(Math.random() * activeGlyphs.length)];
+    function randomHotGlyph() {
+        return hotGlyphs[Math.floor(Math.random() * hotGlyphs.length)];
+    }
+
+    function randomTrailGlyph() {
+        return trailGlyphs[Math.floor(Math.random() * trailGlyphs.length)];
     }
 
     function resize() {
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        dpr = Math.min(window.devicePixelRatio || 1, 1.35);
         width = window.innerWidth;
         height = window.innerHeight;
         canvas.width = Math.floor(width * dpr);
@@ -53,7 +59,7 @@ window.addEventListener('scroll', function() {
 
     function buildCells() {
         const isSmall = width < 768;
-        cellSize = isSmall ? 13 : 15;
+        cellSize = isSmall ? 16 : 18;
         columns = Math.ceil(width / cellSize) + 4;
         rows = Math.ceil(height / cellSize) + 4;
         cells = [];
@@ -65,7 +71,8 @@ window.addEventListener('scroll', function() {
                     y: (row - 2) * cellSize + (Math.random() - 0.5) * 1.2,
                     column: column,
                     row: row,
-                    glyph: '0',
+                    hotGlyph: randomHotGlyph(),
+                    trailGlyph: randomTrailGlyph(),
                     intensity: 0,
                     phase: Math.random() * Math.PI * 2,
                     noise: Math.random()
@@ -99,8 +106,10 @@ window.addEventListener('scroll', function() {
                     const force = (1 - distance / radius) * strength;
                     cell.intensity = Math.min(1.35, Math.max(cell.intensity, force));
 
-                    if (cell.glyph === '0' || force > 0.8) {
-                        cell.glyph = randomActiveGlyph();
+                    if (force > 0.72) {
+                        cell.hotGlyph = randomHotGlyph();
+                    } else if (cell.intensity < 0.18) {
+                        cell.trailGlyph = randomTrailGlyph();
                     }
                 }
             }
@@ -157,20 +166,20 @@ window.addEventListener('scroll', function() {
         cells.forEach(function(cell) {
             const wave = (Math.sin(now * 0.0015 + cell.phase) + 1) * 0.5;
             const active = cell.intensity;
-            let glyph = active > 0.04 ? cell.glyph : '0';
+            let glyph = '0';
             let alpha = 0.034 + wave * 0.034 + cell.noise * 0.018;
             let size = width < 768 ? 9 : 10;
             let x = cell.x;
             let y = cell.y;
 
             if (active > 0) {
+                glyph = active > 0.62 ? cell.hotGlyph : cell.trailGlyph;
                 alpha += active * 0.64;
                 size += active * 3.2;
                 cell.intensity *= prefersReducedMotion ? 0.9 : 0.985;
 
                 if (cell.intensity < 0.025) {
                     cell.intensity = 0;
-                    cell.glyph = '0';
                     glyph = '0';
                 }
             }
@@ -240,6 +249,16 @@ window.addEventListener('scroll', function() {
     }
 
     function draw(now) {
+        const targetFrameDuration = width < 768 ? 50 : 33;
+
+        if (now - lastDrawAt < targetFrameDuration) {
+            if (!prefersReducedMotion) {
+                animationFrame = requestAnimationFrame(draw);
+            }
+            return;
+        }
+
+        lastDrawAt = now;
         pointer.x += (pointer.targetX - pointer.x) * 0.16;
         pointer.y += (pointer.targetY - pointer.y) * 0.16;
 
@@ -277,6 +296,16 @@ window.addEventListener('scroll', function() {
     window.addEventListener('beforeunload', function() {
         cancelAnimationFrame(animationFrame);
     });
+
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            cancelAnimationFrame(animationFrame);
+            return;
+        }
+
+        lastDrawAt = 0;
+        animationFrame = requestAnimationFrame(draw);
+    });
 }());
 
 // 히어로 AI 흐름 배경
@@ -298,6 +327,7 @@ window.addEventListener('scroll', function() {
     let pointerY = 0.42;
     let targetX = 0.58;
     let targetY = 0.42;
+    let lastDrawAt = -Infinity;
 
     if (!ctx) {
         return;
@@ -309,7 +339,7 @@ window.addEventListener('scroll', function() {
 
     function resize() {
         const rect = hero.getBoundingClientRect();
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        dpr = Math.min(window.devicePixelRatio || 1, 1.35);
         width = Math.max(1, rect.width);
         height = Math.max(1, rect.height);
         canvas.width = Math.floor(width * dpr);
@@ -432,6 +462,16 @@ window.addEventListener('scroll', function() {
     }
 
     function draw(now) {
+        const targetFrameDuration = width < 768 ? 50 : 33;
+
+        if (now - lastDrawAt < targetFrameDuration) {
+            if (!prefersReducedMotion) {
+                animationFrame = requestAnimationFrame(draw);
+            }
+            return;
+        }
+
+        lastDrawAt = now;
         ctx.clearRect(0, 0, width, height);
         drawField(now);
 
@@ -457,5 +497,15 @@ window.addEventListener('scroll', function() {
 
     window.addEventListener('beforeunload', function() {
         cancelAnimationFrame(animationFrame);
+    });
+
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            cancelAnimationFrame(animationFrame);
+            return;
+        }
+
+        lastDrawAt = 0;
+        animationFrame = requestAnimationFrame(draw);
     });
 }());
