@@ -368,6 +368,41 @@ header nav.container {
     background: #111;
 }
 
+.spatial-ai-media {
+    margin: 0;
+}
+
+.spatial-ai-media video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 9 / 5;
+    object-fit: cover;
+    border-radius: 8px;
+    background: #111;
+}
+
+.autonomous-platforms-media {
+    margin: 0;
+}
+
+.autonomous-platforms-media img {
+    height: auto;
+    max-height: 520px;
+    object-fit: contain;
+    box-sizing: border-box;
+    padding: 8px;
+    background: #F4F6F8;
+}
+
+.spatial-ai-media figcaption,
+.autonomous-platforms-media figcaption {
+    margin-top: 10px;
+    color: #909090;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    text-align: left;
+}
+
 .video-stack {
     display: flex;
     flex-direction: column;
