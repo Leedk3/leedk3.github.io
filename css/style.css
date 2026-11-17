@@ -774,6 +774,17 @@ header nav.container {
     border-bottom: 2px solid #00C2E0;
 }
 
+.student-author {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.publication-legend {
+    margin: 8px 0 24px;
+    color: #A0A0A0;
+    font-size: 0.9rem;
+}
+
 .pub-venue {
     font-style: italic;
     color: #787878;
