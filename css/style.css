@@ -1,5 +1,5 @@
 /* ============================================================
-   IRDL THEME - Dark Background + Cyan to Magenta Gradient
+   FRL THEME - Dark Background + Cyan to Magenta Gradient
    Primary:   #00C2E0 (Cyan)
    Accent:    #C724B1 (Magenta)
    BG Dark:   #000000 → #3B3B3B gradient
@@ -49,7 +49,7 @@ body > * {
 
 /* 헤더 */
 header {
-    background: #11121A;
+    background: #14141C;
     border-bottom: 2px solid transparent;
     border-image: linear-gradient(90deg, #00C2E0, #C724B1) 1;
     padding: 0.85rem 0 0.75rem;
@@ -76,44 +76,25 @@ header nav.container {
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    gap: 14px;
     width: 100%;
     min-width: 0;
     padding: 6px 14px;
     border-radius: 8px;
-    background: #11121A;
+    background: #14141C;
     border: 1px solid rgba(0, 194, 224, 0.08);
 }
 
 .logo-img {
-    width: 96px;
-    height: 38px;
-    object-fit: cover;
-    object-position: left center;
+    width: 420px;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
     border-radius: 0;
-    background: #11121A;
+    background: #14141C;
     flex: 0 0 auto;
 }
 
-.lab-name {
-    font-size: 1.35rem;
-    font-weight: 700;
-    letter-spacing: 0;
-    background: linear-gradient(135deg, #00C2E0 0%, #C724B1 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-}
-
 .home-page .logo-area {
-    display: none;
-}
-
-.home-page .lab-name {
     display: none;
 }
 
@@ -1131,17 +1112,9 @@ header nav.container {
 
     .logo-img {
         display: block;
-        width: 72px;
-        height: 30px;
-    }
-
-    .lab-name {
-        display: block;
-        text-align: center;
-        line-height: 1.25;
-        font-size: 0.96rem;
-        white-space: normal;
-        overflow: visible;
+        width: 340px;
+        max-width: 100%;
+        height: auto;
     }
 
     .pi-card {

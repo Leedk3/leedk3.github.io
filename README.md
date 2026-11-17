@@ -1,8 +1,8 @@
-# IRDL Lab Website
+# Field Robotics Lab Website
 
-Official website of the **Intelligent Robotics for Defense Lab (IRDL)** at Jeonbuk National University, led by **Prof. Daegyu Lee**.
+Official website of the **Field Robotics Lab (FRL)** at Jeonbuk National University, led by **Prof. Daegyu Lee**.
 
-🌐 **Live Site**: [https://leedk3.github.io](https://leedk3.github.io)
+🌐 **Live Site**: [https://frl.jbnu.ac.kr](https://frl.jbnu.ac.kr)
 
 ---
 
@@ -17,7 +17,7 @@ Official website of the **Intelligent Robotics for Defense Lab (IRDL)** at Jeonb
 ## Project Structure
 
 ```
-irdl-lab-jbnu.github.io/
+leedk3.github.io/
 ├── index.html              # Home
 ├── team.html               # Members
 ├── projects.html           # Research projects
